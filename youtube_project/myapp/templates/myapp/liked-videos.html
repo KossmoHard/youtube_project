@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Liked Videos
+{% endblock %}
+
+{% block search %} {% endblock %}
+
+{% block content %}
+
+    {% if object_list %}
+        {% for list in object_list %}
+            <div class="col-md-4 content-card">
+                <div class="card mb-4 shadow-sm h-100">
+                    <div class="video-image">
+                        <div class="youtube" id="{{ list.content_object.video_id }}" data-image="{{ list.content_object.preview }}"
+                             data-params="modestbranding=1&showinfo=0&controls=0&vq=hd720"
+                             style="width:100%;height:261px;"></div>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="title"><a href="{{ list.content_object.get_absolute_url }}">{{ list.content_object.title|safe }}</a></h2>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">{{ list.content_object.published }}</small>
+                            <div class="total_likes">
+                                <span>{{ list.content_object.total_likes }}
+                                    <i class="far fa-thumbs-up"></i></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="not-found"><h2>No favorite videos</h2></div>
+    {% endif %}
+
+{% endblock %}
+
+{% block pagination %}
+
+    {% include 'myapp/includes/pagination.html' %}
+
+{% endblock %}

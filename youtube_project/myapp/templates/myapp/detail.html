@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ object.title }}
+{% endblock %}
+
+{% block content %}
+<div class="col-sm-8">
+    <div class="card">
+        <div class="card-header">
+            {{ object.title }}
+        </div>
+        <div class="card-body">
+            <iframe width="100%" height="360px" src="https://www.youtube.com/embed/{{ object.video_id }}"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+                {% if request.user.is_authenticated %}
+                    <a class="button-video like" data-name="{{ object.video_id }}">
+                        {% if like %}
+                            <i class="fas fa-heart icon-like like-enabled"></i>
+                        {% else %}
+                            <i class="far fa-heart icon-like like-enabled"></i>
+                        {% endif %}
+                    </a>
+                    {% else %}
+                    <a class="button-video like" data-name="{{ list.content_object.video_id }}">
+                        <i class="far fa-heart icon-like like-disabled"></i>
+                    </a>
+                {% endif %}
+                <small class="text-muted">{{ video.published }}</small>
+            </div>
+            <hr>
+            <p class="description">{{ object.description }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div class="col-sm-4">
+    <div class="card">
+        <h5 class="card-header">Liked videos</h5>
+        <div class="card-body">
+            {% if liked_video %}
+                {% for video in liked_video %}
+                    <div class="sidebar-video">
+                        <a href="{{ video.content_object.get_absolute_url }}" class="link-video">
+                            <img src="{{ video.content_object.preview }}" alt="{{ video.content_object.title }}"
+                                 title="{{ video.content_object.title }}">
+                        </a>
+                        <div class="title-video">
+                            <a href="{{ video.content_object.get_absolute_url }}" class="link-video">
+                                {{ video.content_object.title }}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="not-found"><h2>No favorite videos</h2></div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block search %}
+    <section class="jumbotron text-center">
+        <div class="container">
+            <div class="row">
+                <div class="offset-3 col-md-6">
+                    <h2>YouTube video search</h2>
+                    <form method="get" class="search-form">
+                        <input type="text" class="form-control" name="q" value="" placeholder="Search">
+                        <button class="btn btn-outline-danger" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    {% if object_list %}
+        {% for video in object_list %}
+            <div class="col-md-4 content-card">
+                <div class="card mb-4 shadow-sm h-100">
+                    <div class="video-image">
+                         <div class="youtube" id="{{ video.video_id }}" data-image="{{ video.preview }}"
+                              data-params="modestbranding=1&showinfo=0&controls=0&vq=hd720"
+                              style="width:100%;height:261px;"></div>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="title"><a href="{{ video.get_absolute_url }}">{{ video.title|safe }}</a></h2>
+                        <!--<p class="card-text">{{ video.description|truncatewords:12  }}</p>-->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">{{ video.published }}</small>
+                            {% if video.total_likes %}
+                                <div class="total_likes">
+                                    <small class="text-muted">{{ video.total_likes }}</small>
+                                    <i class="far fa-thumbs-up"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="not-found"><h2>Video not found</h2></div>
+    {% endif %}
+{% endblock %}
+
+{% block pagination %}
+
+    {% include 'myapp/includes/pagination.html' %}
+
+{% endblock %}
